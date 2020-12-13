@@ -5,7 +5,7 @@ const { performance } = require('perf_hooks');
 
 import LibMongo from "../libs/LibMongo"
 import LibPagenate from "../libs/LibPagenate"
-import LibReportBreads from "../libs/LibReportBreads"
+import LibReportCategory from "../libs/LibReportCategory"
 
 /******************************** 
 * 
@@ -17,10 +17,9 @@ router.get('/index', async function(req, res) {
         var page = req.query.page;
         LibPagenate.init();
         var page_info = LibPagenate.get_page_start(page);       
-console.log( "page=",  page, page_info ); 
         await collection.aggregate([
-            {$skip: page_info.start },
-            {$limit: page_info.limit },
+//            {$skip: page_info.start },
+//            {$limit: page_info.limit },
             {$sort: {created_at: -1} },
             {
                 $lookup: {
@@ -36,14 +35,21 @@ console.log( "page=",  page, page_info );
 
         ]).toArray().then((docs) => {
             bread_orders = docs
-console.log(bread_orders);
+//console.log(bread_orders);
         })
-        var bread_ids = await LibReportBreads.get_bread_ids(bread_orders)
+        var bread_ids = await LibReportCategory.get_bread_ids(bread_orders)
 //console.log(bread_ids);
-        var breads = await LibReportBreads.get_bread_items(bread_ids)
-        var report_items = await LibReportBreads.get_report_items(breads , bread_orders)
-// console.log(report_items);
-        var param = LibPagenate.get_page_items(report_items )
+        var bread_category = await LibReportCategory.get_bread_items(bread_ids) 
+//console.log(bread_category );
+        var category_ids = await LibReportCategory.get_category_ids( bread_category )
+//console.log(category_ids );
+        var category_items = await LibReportCategory.get_category_items( category_ids )
+//console.log(category_items );
+        var report_items = await LibReportCategory.get_report_items(bread_category , bread_orders)
+//console.log(report_items);
+        var report_category = await LibReportCategory.get_report_category(category_items, report_items)
+//console.log(report_category);        
+        var param = LibPagenate.get_page_items(report_category )
         res.json(param);
     } catch (err) {
         console.log(err);

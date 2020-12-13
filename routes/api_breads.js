@@ -30,7 +30,7 @@ console.log( "page=",  page, page_info );
                 }
             }
         ]).toArray().then((docs) => {
-//            console.log(docs);
+console.log(docs);
             var param = LibPagenate.get_page_items(docs )
             res.json(param);
         })

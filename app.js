@@ -15,6 +15,7 @@ var ordersRouter = require('./routes/orders');
 var breadsRouter = require('./routes/breads');
 var breadOrdersRouter = require('./routes/bread_orders');
 var reportBreadsRouter = require('./routes/report_breads');
+var reportCategoryRouter = require('./routes/report_category');
 
 //
 var apiRouter = require('./routes/api');
@@ -22,6 +23,7 @@ var apiOrdersRouter = require('./routes/api_orders');
 var apiBreadsRouter = require('./routes/api_breads');
 var apiBreadOrdersRouter = require('./routes/api_bread_orders');
 var apiReportBreadsRouter = require('./routes/api_report_breads');
+var apiReportCategoryRouter = require('./routes/api_report_category');
 
 var app = express();
 const expressLayouts = require('express-ejs-layouts');
@@ -69,6 +71,7 @@ app.use('/orders',  ordersRouter );
 app.use('/breads',  breadsRouter );
 app.use('/bread_orders',  breadOrdersRouter );
 app.use('/report_breads',  reportBreadsRouter );
+app.use('/report_category',  reportCategoryRouter );
 
 //api
 app.use('/api', apiRouter );
@@ -76,6 +79,7 @@ app.use('/api_orders', apiOrdersRouter );
 app.use('/api_breads',  apiBreadsRouter );
 app.use('/api_bread_orders',  apiBreadOrdersRouter );
 app.use('/api_report_breads',  apiReportBreadsRouter );
+app.use('/api_report_category',  apiReportCategoryRouter );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
