@@ -23,12 +23,21 @@ console.log( "page=",  page, page_info );
             {$sort: {created_at: -1} },
             {
                 $lookup: {
+                    from: "type",
+                    localField: "type_id",
+                    foreignField: "_id",
+                    as: "types"
+                }
+            },
+            {
+                $lookup: {
                     from: "category",
                     localField: "category_id",
                     foreignField: "_id",
                     as: "category"
                 }
             }
+
         ]).toArray().then((docs) => {
 console.log(docs);
             var param = LibPagenate.get_page_items(docs )

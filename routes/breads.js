@@ -48,7 +48,7 @@ router.post('/add', async function(req, res, next) {
 // console.log(data  )
         var item = {
             name: data.name,
-            price : data.price,
+            price : parseInt(data.price),
             category_id: new ObjectID( data.category_id) ,  
             type_id: new ObjectID( data.type_id ) ,  
             tag_id: new ObjectID( data.tag_id) ,  

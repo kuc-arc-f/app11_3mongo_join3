@@ -10,6 +10,11 @@ class IndexRow extends React.Component {
             bread_name = this.props.obj.breads[0].name ;
             price_total = this.props.obj.breads[0].price * parseInt(this.props.obj.order_num);
         }
+        const formatter = new Intl.NumberFormat('ja-JP', {
+            style: 'currency',
+            currency: 'JPY'
+        });
+        price_total = formatter.format(price_total)            
         return (
         <tr>
             <td>
@@ -17,7 +22,7 @@ class IndexRow extends React.Component {
                 </a>
                 bread : {bread_name} <br />
                 num: {this.props.obj.order_num } <br />
-                Price: {price_total} JPY<br />
+                Price / JPY: {price_total} <br />
                 {this.props.obj.created_at }<br />
             </td>
             <td>
