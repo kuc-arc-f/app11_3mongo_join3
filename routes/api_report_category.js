@@ -18,8 +18,6 @@ router.get('/index', async function(req, res) {
         LibPagenate.init();
         var page_info = LibPagenate.get_page_start(page);       
         await collection.aggregate([
-//            {$skip: page_info.start },
-//            {$limit: page_info.limit },
             {$sort: {created_at: -1} },
             {
                 $lookup: {
