@@ -20,14 +20,6 @@ router.get('/index', async function(req, res) {
         await collection.aggregate([
             {$sort: {created_at: -1} },
             {
-                $lookup: {
-                    from: "breads",
-                    localField: "bread_id",
-                    foreignField: "_id",
-                    as: "breads"
-                }
-            },
-            {
                 $group : { _id: "$bread_id", num_total: { $sum : "$order_num" }} 
             }
 

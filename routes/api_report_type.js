@@ -20,6 +20,7 @@ router.get('/index', async function(req, res) {
         var page_info = LibPagenate.get_page_start(page);       
         await collection.aggregate([
             {$sort: {created_at: -1} },
+            /*
             {
                 $lookup: {
                     from: "breads",
@@ -28,6 +29,7 @@ router.get('/index', async function(req, res) {
                     as: "breads"
                 }
             },
+            */
             {
                 $group : { _id: "$bread_id", num_total: { $sum : "$order_num" }} 
             }

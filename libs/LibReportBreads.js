@@ -70,14 +70,6 @@ export default {
                 { $match: { "created_at": {$gte: start } } 
                 },
                 {
-                    $lookup: {
-                        from: "breads",
-                        localField: "bread_id",
-                        foreignField: "_id",
-                        as: "breads"
-                    }
-                },
-                {
                     $group : { _id: "$bread_id", num_total: { $sum : "$order_num" }} 
                 }
             ]).toArray().then((docs) => {
@@ -96,14 +88,6 @@ export default {
             const collection = await LibMongo.get_collection("bread_orders" )
             await collection.aggregate([
                 { $match: { "created_at": {$gte: start } } 
-                },
-                {
-                    $lookup: {
-                        from: "breads",
-                        localField: "bread_id",
-                        foreignField: "_id",
-                        as: "breads"
-                    }
                 },
                 {
                     $group : { _id: "$bread_id", num_total: { $sum : "$order_num" }} 
