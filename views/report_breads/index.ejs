@@ -14,6 +14,9 @@ class List extends React.Component {
         super(props);
         this.state = {data: '', item_count:0, paginate_disp:0 }
         this.db = null
+        this.change_month = this.change_month.bind(this);
+        this.change_all = this.change_all.bind(this);
+        this.change_week = this.change_week.bind(this);
     }
     componentDidMount(){
         console.log("PAGE:", PAGE)
@@ -53,12 +56,48 @@ console.log( items );
             </div>
             )
         }
-    }    
+    }  
+    change_week(){
+console.log("#change_week")
+        axios.get("/api_report_breads/index_week?page=1").then(res =>  {
+            var data = res.data
+            var items = data.docs
+            var item_count = data.page_item.item_count
+            var paginate_disp = data.page_item.paginate_disp;
+console.log( items );
+            this.setState({ 
+                data: items ,item_count:item_count ,paginate_disp: paginate_disp
+            })
+        })
+    }
+    change_all(){
+        this.get_items(PAGE);
+    }
+    change_month(){
+        console.log("#change_month")
+        axios.get("/api_report_breads/index_month?page=1").then(res =>  {
+            var data = res.data
+            var items = data.docs
+            var item_count = data.page_item.item_count
+            var paginate_disp = data.page_item.paginate_disp;
+console.log( items );
+            this.setState({ 
+                data: items ,item_count:item_count ,paginate_disp: paginate_disp
+            })
+        })
+
+    }  
     render(){
         return (
             <div>
                 <h1>ReportBreads</h1>
-                <table className="table table-hover">
+                <hr className="mb-2"/>
+                <div className="span_btn_wrap">
+                    <button onClick={this.change_week} className="ml-2">Week</button>                
+                    <button onClick={this.change_month} className="ml-2">Month</button>
+                    <button onClick={this.change_all} className="ml-2">ALL</button>                
+                </div>
+                <table className="table table-hover mt-2">
                     <thead>
                     <tr>
                         <th>bread_orders - item</th>
@@ -77,3 +116,8 @@ console.log( items );
 }
 ReactDOM.render(<List />, document.getElementById('app'));
 </script>
+
+<!-- ---->
+<style>
+.span_btn_wrap{ text-align: center; } 
+</style>

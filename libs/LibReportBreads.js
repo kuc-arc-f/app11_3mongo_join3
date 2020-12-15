@@ -2,6 +2,7 @@
 // LibOrders
 import LibMongo from "../libs/LibMongo"
 var ObjectID = require('mongodb').ObjectID;
+import moment from 'moment'
 
 //
 export default {
@@ -59,6 +60,63 @@ export default {
             console.log(e);
             throw new Error('Error , get_bread_ids');
         } 
-    }
+    },
+    get_month_items :async function(){
+        try{
+            var ret = []
+            var start = moment().startOf('month').toDate()
+            const collection = await LibMongo.get_collection("bread_orders" )
+            await collection.aggregate([
+                { $match: { "created_at": {$gte: start } } 
+                },
+                {
+                    $lookup: {
+                        from: "breads",
+                        localField: "bread_id",
+                        foreignField: "_id",
+                        as: "breads"
+                    }
+                },
+                {
+                    $group : { _id: "$bread_id", num_total: { $sum : "$order_num" }} 
+                }
+            ]).toArray().then((docs) => {
+                ret = docs
+            })            
+            return ret;  
+        } catch (e) {
+            console.log(e);
+            throw new Error('Error , get_month_items ');
+        } 
+    },
+    get_week_items :async function(){
+        try{
+            var ret = []
+            var start = moment().startOf('week').toDate()
+            const collection = await LibMongo.get_collection("bread_orders" )
+            await collection.aggregate([
+                { $match: { "created_at": {$gte: start } } 
+                },
+                {
+                    $lookup: {
+                        from: "breads",
+                        localField: "bread_id",
+                        foreignField: "_id",
+                        as: "breads"
+                    }
+                },
+                {
+                    $group : { _id: "$bread_id", num_total: { $sum : "$order_num" }} 
+                }
+            ]).toArray().then((docs) => {
+                ret = docs
+            })            
+            return ret;  
+        } catch (e) {
+            console.log(e);
+            throw new Error('Error , get_week_items ');
+        }
+    },
+
 
 }
